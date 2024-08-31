@@ -35,10 +35,11 @@ public class CartaoDAO implements IDAO {
         }
     }
 
+
     @Override
     public List<EntidadeDominio> getAll(int limit, int offset) throws SQLException {
         String sql = "SELECT * FROM cartoes LIMIT ? OFFSET ?";
-        List<EntidadeDominio> cartoes = List.of();
+        List<EntidadeDominio> cartoes = new ArrayList<>();
 
         if (limit == 0) {
             limit = 10;
@@ -55,7 +56,7 @@ public class CartaoDAO implements IDAO {
             }
             return cartoes;
         } catch (SQLException err) {
-            throw new SQLException("Erro ao buscar clientes", err);
+            throw new SQLException("Erro ao buscar cartões", err);
         }
     }
 
@@ -207,6 +208,7 @@ public class CartaoDAO implements IDAO {
         cartao.setValidade(rs.getDate("car_validade").toLocalDate());
         cartao.setFavorito(rs.getBoolean("car_favorito"));
         cartao.setApelidoCartao(rs.getString("car_apelido_cartao"));
+
         return cartao;
     }
 

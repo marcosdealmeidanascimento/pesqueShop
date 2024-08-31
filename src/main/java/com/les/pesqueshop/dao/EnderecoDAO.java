@@ -38,7 +38,7 @@ public class EnderecoDAO implements IDAO {
     @Override
     public List<EntidadeDominio> getAll(int limit, int offset) throws SQLException {
         String sql = "SELECT * FROM enderecos LIMIT ? OFFSET ?";
-        List<EntidadeDominio> enderecos = List.of();
+        List<EntidadeDominio> enderecos = new ArrayList<>();
 
         if (limit == 0) {
             limit = 10;
