@@ -62,67 +62,7 @@ public class CartaoDAO implements IDAO {
 
     @Override
     public List<EntidadeDominio> filter(EntidadeDominio entidadeDominio, int limit, int offset) throws SQLException {
-        Cartao cartao = (Cartao) entidadeDominio;
-        List<EntidadeDominio> cartoes = new ArrayList<>();
-        StringBuilder sql = new StringBuilder("SELECT * FROM cartoes");
-
-        List<Object> params = new ArrayList<>();
-
-        if (limit == 0) {
-            limit = 10;
-        }
-
-        sql.append(" WHERE car_cli_id = ?");
-        params.add(cartao.getCliente().getId());
-
-        if (cartao.getNumero() != null) {
-            sql.append(" AND car_numero = ?");
-            params.add(cartao.getNumero());
-        }
-
-        if (cartao.getNomeImpresso() != null) {
-            sql.append(" AND car_nome_impresso = ?");
-            params.add(cartao.getNomeImpresso());
-        }
-
-        if (cartao.getCvv() != null) {
-            sql.append(" AND car_cvv = ?");
-            params.add(cartao.getCvv());
-        }
-
-        if (cartao.getBandeira() != null) {
-            sql.append(" AND car_bandeira = ?");
-            params.add(cartao.getBandeira());
-        }
-
-        if (cartao.getValidade() != null) {
-            sql.append(" AND car_validade = ?");
-            params.add(cartao.getValidade());
-        }
-
-        if (cartao.getApelidoCartao() != null) {
-            sql.append(" AND car_apelido_cartao = ?");
-            params.add(cartao.getApelidoCartao());
-        }
-
-        sql.append(" LIMIT ? OFFSET ?");
-
-        PreparedStatement ps = conn.prepareStatement(sql.toString());
-
-        for (int i = 0; i < params.size(); i++) {
-            ps.setObject(i + 1, params.get(i));
-        }
-
-        ps.setInt(params.size() + 1, limit);
-        ps.setInt(params.size() + 2, offset);
-
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()) {
-            cartoes.add(getDadosCartao(rs));
-        }
-
-        return cartoes;
-
+        return null;
     }
 
     public List<EntidadeDominio> getCartoesCliente (int id) throws SQLException {

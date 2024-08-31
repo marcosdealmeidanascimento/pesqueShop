@@ -6,12 +6,12 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 public class Endereco extends EntidadeDominio{
     private String cep, tipoResidencia, logradouro, tipoLogradouro, numero, bairro, cidade, estado, pais, complemento, apelidoEndereco;
     private Cliente cliente;
-    private boolean favorito;
+    private boolean favorito, cobranca;
 
     public Endereco() {
     }
 
-    public Endereco(String cep, String tipoResidencia, String logradouro, String tipoLogradouro, String numero, String bairro, String cidade, String estado, String pais, String complemento, Cliente cliente, boolean favorito, String apelidoEndereco) {
+    public Endereco(String cep, String tipoResidencia, String logradouro, String tipoLogradouro, String numero, String bairro, String cidade, String estado, String pais, String complemento, Cliente cliente, boolean favorito, String apelidoEndereco, boolean cobranca) {
         setCep(cep);
         setTipoResidencia(tipoResidencia);
         setLogradouro(logradouro);
@@ -25,6 +25,7 @@ public class Endereco extends EntidadeDominio{
         setFavorito(favorito);
         setCliente(cliente);
         setApelidoEndereco(apelidoEndereco);
+        setCobranca(cobranca);
     }
 
     public String getCep() {
@@ -131,6 +132,14 @@ public class Endereco extends EntidadeDominio{
         this.apelidoEndereco = apelidoEndereco;
     }
 
+    public boolean getCobranca() {
+        return cobranca;
+    }
+
+    public void setCobranca(boolean cobranca) {
+        this.cobranca = cobranca;
+    }
+
     @Override
     public String toString() {
         return "Endereco{" +
@@ -146,8 +155,9 @@ public class Endereco extends EntidadeDominio{
                 ", pais='" + pais + '\'' +
                 ", complemento='" + complemento + '\'' +
                 ", apelidoEndereco='" + apelidoEndereco + '\'' +
-                ", cliente=" + cliente +
-                ", favorito=" + favorito +
+                ", cliente=" + cliente + '\'' +
+                ", favorito=" + favorito + '\'' +
+                ", cobranca=" + cobranca + '\'' +
                 '}';
     }
 }

@@ -52,7 +52,7 @@ public class CartaoFacade implements IFacade {
         Cartao saveCartao =  (Cartao) cartaoDAO.save(entidadeDominio);
 
         cartao.setId(saveCartao.getId());
-        Log log = objLog("insert", "", cartao.toString());
+        Log log = objLog("INSERT", "", cartao.toString());
 
         gerarLog.processar(log);
 
@@ -73,7 +73,7 @@ public class CartaoFacade implements IFacade {
 
         Cartao cartaoAtualizado =  (Cartao) cartaoDAO.update(id, entidadeDominio);
 
-        Log log = objLog("update", cartaoAntigo.toString(), cartaoAtualizado.toString());
+        Log log = objLog("UPDATE", cartaoAntigo.toString(), cartaoAtualizado.toString());
 
         gerarLog.processar(log);
 

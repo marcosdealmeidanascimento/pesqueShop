@@ -51,7 +51,7 @@ public class EnderecoFacade implements IFacade {
         Endereco saveEndereco =  (Endereco) enderecoDAO.save(entidadeDominio);
 
         endereco.setId(saveEndereco.getId());
-        Log log = objLog("insert", "", endereco.toString());
+        Log log = objLog("INSERT", "", endereco.toString());
         gerarLog.processar(log);
 
         return endereco;
@@ -69,7 +69,7 @@ public class EnderecoFacade implements IFacade {
         }
 
         Endereco enderecoAtualizado =  (Endereco) enderecoDAO.update(id, entidadeDominio);
-        Log log = objLog("update", enderecoAntigo.toString(), enderecoAtualizado.toString());
+        Log log = objLog("UPDATE", enderecoAntigo.toString(), enderecoAtualizado.toString());
         gerarLog.processar(log);
 
         return enderecoAtualizado;

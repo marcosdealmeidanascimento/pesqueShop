@@ -62,87 +62,7 @@ public class EnderecoDAO implements IDAO {
 
     @Override
     public List<EntidadeDominio> filter(EntidadeDominio entidadeDominio, int limit, int offset) throws SQLException {
-        Endereco endereco = (Endereco) entidadeDominio;
-        List<EntidadeDominio> enderecos = new ArrayList<>();
-        StringBuilder sql = new StringBuilder("SELECT * FROM enderecos WHERE 1 = 1");
-
-        List<Object> params = new ArrayList<>();
-
-        if (limit == 0) {
-            limit = 10;
-        }
-
-        sql.append(" AND end_cli_id = ?");
-        params.add(endereco.getCliente().getId());
-
-        if (endereco.getCep() != null) {
-            sql.append(" AND end_cep = ?");
-            params.add(endereco.getCep());
-        }
-
-        if (endereco.getTipoResidencia() != null) {
-            sql.append(" AND end_tipo_residencia = ?");
-            params.add(endereco.getTipoResidencia());
-        }
-
-        if (endereco.getLogradouro() != null) {
-            sql.append(" AND end_logradouro LIKE ?");
-            params.add("%" + endereco.getLogradouro() + "%");
-        }
-
-        if (endereco.getTipoLogradouro() != null) {
-            sql.append(" AND end_tipo_logradouro = ?");
-            params.add(endereco.getTipoLogradouro());
-        }
-
-        if (endereco.getNumero() != null) {
-            sql.append(" AND end_numero = ?");
-            params.add(endereco.getNumero());
-        }
-
-        if (endereco.getBairro() != null) {
-            sql.append(" AND end_bairro LIKE ?");
-            params.add("%" + endereco.getBairro() + "%");
-        }
-
-        if (endereco.getCidade() != null) {
-            sql.append(" AND end_cidade LIKE ?");
-            params.add("%" + endereco.getCidade() + "%");
-        }
-
-        if (endereco.getEstado() != null) {
-            sql.append(" AND end_estado LIKE ?");
-            params.add("%" + endereco.getEstado() + "%");
-        }
-
-        if (endereco.getPais() != null) {
-            sql.append(" AND end_pais LIKE ?");
-            params.add("%" + endereco.getPais() + "%");
-        }
-
-        if (endereco.getApelidoEndereco() != null) {
-            sql.append(" AND end_apelido_endereco LIKE ?");
-            params.add("%" + endereco.getApelidoEndereco() + "%");
-        }
-
-        sql.append(" LIMIT ? OFFSET ?");
-
-        PreparedStatement ps = conn.prepareStatement(sql.toString());
-
-        for (int i = 0; i < params.size(); i++) {
-            ps.setObject(i + 1, params.get(i));
-        }
-
-        ps.setInt(params.size() + 1, limit);
-        ps.setInt(params.size() + 2, offset);
-
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()) {
-            enderecos.add(getDadosEndereco(rs));
-        }
-
-        return enderecos;
-
+        return null;
     }
 
     public List<EntidadeDominio> getEnderecosCliente(int id) throws SQLException {
@@ -166,7 +86,7 @@ public class EnderecoDAO implements IDAO {
     @Override
     public EntidadeDominio save(EntidadeDominio entidadeDominio) throws SQLException {
         var endereco = (Endereco) entidadeDominio;
-        String sql = "INSERT INTO enderecos (end_cep, end_tipo_residencia, end_logradouro, end_tipo_logradouro, end_numero, end_bairro, end_cidade, end_estado, end_pais, end_complemento, end_favorito, end_apelido_endereco, end_cli_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING end_id";
+        String sql = "INSERT INTO enderecos (end_cep, end_tipo_residencia, end_logradouro, end_tipo_logradouro, end_numero, end_bairro, end_cidade, end_estado, end_pais, end_complemento, end_favorito, end_apelido_endereco, end_cli_id, end_cobranca) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING end_id";
 
         try {
             var ps = conn.prepareStatement(sql);
@@ -185,12 +105,12 @@ public class EnderecoDAO implements IDAO {
     @Override
     public EntidadeDominio update(int id, EntidadeDominio entidadeDominio) throws SQLException {
         var endereco = (Endereco) entidadeDominio;
-        String sql = "UPDATE enderecos SET end_cep = ?, end_tipo_residencia = ?, end_logradouro = ?, end_tipo_logradouro = ?, end_numero = ?, end_bairro = ?, end_cidade = ?, end_estado = ?, end_pais = ?, end_complemento = ?, end_favorito = ?, end_apelido_endereco = ?, end_cli_id = ? WHERE end_id = ?";
+        String sql = "UPDATE enderecos SET end_cep = ?, end_tipo_residencia = ?, end_logradouro = ?, end_tipo_logradouro = ?, end_numero = ?, end_bairro = ?, end_cidade = ?, end_estado = ?, end_pais = ?, end_complemento = ?, end_favorito = ?, end_apelido_endereco = ?, end_cli_id = ?, end_cobranca = ? WHERE end_id = ?";
 
         try {
             var ps = conn.prepareStatement(sql);
             setDadosEndereco(endereco, ps);
-            ps.setInt(14, id);
+            ps.setInt(15, id);
             ps.executeUpdate();
             endereco.setId(id);
             return endereco;
@@ -233,6 +153,7 @@ public class EnderecoDAO implements IDAO {
         endereco.setPais(rs.getString("end_pais"));
         endereco.setFavorito(rs.getBoolean("end_favorito"));
         endereco.setApelidoEndereco(rs.getString("end_apelido_endereco"));
+        endereco.setCobranca(rs.getBoolean("end_cobranca"));
         return endereco;
     }
 
@@ -250,5 +171,6 @@ public class EnderecoDAO implements IDAO {
         ps.setBoolean(11, endereco.getFavorito());
         ps.setString(12, endereco.getApelidoEndereco());
         ps.setInt(13, endereco.getCliente().getId());
+        ps.setBoolean(14, endereco.getCobranca());
     }
 }

@@ -18,7 +18,7 @@ import java.util.List;
 public class ClienteController {
     private final ClienteFacade clienteFacade;
 
-    public ClienteController() throws SQLException {
+    public ClienteController() throws SQLException, Exception {
         this.clienteFacade = new ClienteFacade();
     }
 

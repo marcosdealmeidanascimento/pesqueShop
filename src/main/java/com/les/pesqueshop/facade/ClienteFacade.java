@@ -5,10 +5,7 @@ import com.les.pesqueshop.dao.ClienteDAO;
 import com.les.pesqueshop.dominio.Cliente;
 import com.les.pesqueshop.dominio.EntidadeDominio;
 import com.les.pesqueshop.dominio.Log;
-import com.les.pesqueshop.strategies.GerarLog;
-import com.les.pesqueshop.strategies.ValidarDadosCliente;
-import com.les.pesqueshop.strategies.ValidarSenha;
-import com.les.pesqueshop.strategies.VerificarExistenciaCliente;
+import com.les.pesqueshop.strategies.*;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -20,13 +17,15 @@ public class ClienteFacade implements IFacade {
     private final ValidarDadosCliente validarDadosCliente;
     private final ValidarSenha validarSenha;
     private final GerarLog gerarLog;
+    private final CriptografiaSenha criptografiaSenha;
 
-    public ClienteFacade() throws SQLException {
+    public ClienteFacade() throws SQLException, Exception {
         this.clienteDAO = new ClienteDAO();
         this.verificarExistenciaCliente = new VerificarExistenciaCliente();
         this.validarDadosCliente = new ValidarDadosCliente();
         this.validarSenha = new ValidarSenha();
         this.gerarLog = new GerarLog();
+        this.criptografiaSenha = new CriptografiaSenha();
     }
 
     @Override
@@ -50,6 +49,7 @@ public class ClienteFacade implements IFacade {
         String existenciaResponse = verificarExistenciaCliente.processar(entidadeDominio);
         String dadosResponse = validarDadosCliente.processar(entidadeDominio);
         String senhaResponse = validarSenha.processar(entidadeDominio);
+        String criptografarSenha = criptografiaSenha.processar(entidadeDominio);
 
         if (!existenciaResponse.equals("{}")) {
             throw new SQLException(String.valueOf(existenciaResponse));
@@ -61,6 +61,10 @@ public class ClienteFacade implements IFacade {
 
         if (!senhaResponse.equals("{}")) {
             throw new SQLException(String.valueOf(senhaResponse));
+        }
+
+        if (!criptografarSenha.equals("")) {
+            throw new SQLException(String.valueOf(criptografarSenha));
         }
 
         if (!dadosResponse.equals("{}")) {
@@ -94,10 +98,16 @@ public class ClienteFacade implements IFacade {
 
         if (cliente.getSenha() != null) {
             String senhaResponse = validarSenha.processar(entidadeDominio);
+            String criptografarSenha = criptografiaSenha.processar(entidadeDominio);
 
             if (!senhaResponse.equals("{}")) {
                 throw new SQLException(String.valueOf(senhaResponse));
             }
+
+            if (!criptografarSenha.equals("")) {
+                throw new SQLException(String.valueOf(criptografarSenha));
+            }
+
         }
 
         String dadosResponse = validarDadosCliente.processar(entidadeDominio);
