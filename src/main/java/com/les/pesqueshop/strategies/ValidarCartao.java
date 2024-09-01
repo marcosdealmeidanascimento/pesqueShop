@@ -38,16 +38,16 @@ public class ValidarCartao implements IStrategy {
             errorMessages.put("validade", "Validade é obrigatória");
         }
 
-        if (cartao.getCliente() == null) {
-            errorMessages.put("cliente", "Cliente é obrigatório");
-        }
-
         if (cartao.getBandeira() == null || cartao.getBandeira().equals("")) {
             errorMessages.put("bandeira", "Bandeira é obrigatória");
         }
 
         if (cartao.getApelidoCartao() == null || cartao.getApelidoCartao().equals("")) {
             errorMessages.put("apelidoCartao", "Apelido do cartão é obrigatório");
+        }
+
+        if (cartao.getCliente() == null) {
+            errorMessages.put("cliente", "Verificando dados do cliente");
         }
 
         ObjectMapper objectMapper = new ObjectMapper();

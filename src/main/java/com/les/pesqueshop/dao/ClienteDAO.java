@@ -87,7 +87,7 @@ public class ClienteDAO implements IDAO {
         }
 
         if (cliente.getEmail() != null) {
-            sql.append(" OR cli_email = ?");
+            sql.append(" AND cli_email = ?");
             params.add(cliente.getEmail());
         }
 
@@ -134,6 +134,42 @@ public class ClienteDAO implements IDAO {
         return clientes;
     }
 
+    public EntidadeDominio getClienteByEmail(EntidadeDominio entidadeDominio) throws SQLException {
+        Cliente cliente = (Cliente) entidadeDominio;
+        String email = cliente.getEmail();
+        String sql = "SELECT cli_id, cli_cpf, cli_nome_completo, cli_genero, cli_email, cli_telefone_ddd, cli_telefone, cli_tipo_telefone, cli_data_nascimento, cli_status FROM clientes c WHERE cli_email = ?";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return getDadosCliente(rs);
+            }
+            return null;
+        } catch (SQLException err) {
+            throw new SQLException(err);
+        }
+    }
+
+    public EntidadeDominio getClienteByCpf(EntidadeDominio entidadeDominio) throws SQLException {
+        Cliente cliente = (Cliente) entidadeDominio;
+        String cpf = cliente.getCpf();
+        String sql = "SELECT cli_id, cli_cpf, cli_nome_completo, cli_genero, cli_email, cli_telefone_ddd, cli_telefone, cli_tipo_telefone, cli_data_nascimento, cli_status FROM clientes c WHERE cli_cpf = ?";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, cpf);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return getDadosCliente(rs);
+            }
+            return null;
+        } catch (SQLException err) {
+            throw new SQLException(err);
+        }
+    }
+
     @Override
     public EntidadeDominio save(EntidadeDominio entidadeDominio) throws SQLException {
         Cliente cliente = (Cliente) entidadeDominio;
@@ -150,7 +186,7 @@ public class ClienteDAO implements IDAO {
 
             return cliente;
         } catch (SQLException err) {
-            throw new SQLException("Erro ao salvar cliente", err);
+            throw new SQLException(err);
         }
 
     }
@@ -179,7 +215,7 @@ public class ClienteDAO implements IDAO {
             return cliente;
 
         } catch (SQLException err) {
-            throw new SQLException("Erro ao atualizar cliente", err);
+            throw new SQLException(err);
         }
 
     }

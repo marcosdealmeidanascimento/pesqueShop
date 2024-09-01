@@ -86,7 +86,7 @@ public class EnderecoDAO implements IDAO {
     @Override
     public EntidadeDominio save(EntidadeDominio entidadeDominio) throws SQLException {
         var endereco = (Endereco) entidadeDominio;
-        String sql = "INSERT INTO enderecos (end_cep, end_tipo_residencia, end_logradouro, end_tipo_logradouro, end_numero, end_bairro, end_cidade, end_estado, end_pais, end_complemento, end_favorito, end_apelido_endereco, end_cli_id, end_cobranca) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING end_id";
+        String sql = "INSERT INTO enderecos (end_cep, end_tipo_residencia, end_logradouro, end_tipo_logradouro, end_numero, end_bairro, end_cidade, end_estado, end_pais, end_complemento, end_favorito, end_apelido_endereco, end_cli_id, end_cobranca, end_observacao) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING end_id";
 
         try {
             var ps = conn.prepareStatement(sql);
@@ -98,24 +98,24 @@ public class EnderecoDAO implements IDAO {
             }
             return endereco;
         } catch (SQLException err) {
-            throw new SQLException("Erro ao salvar endereço", err);
+            throw new SQLException(err);
         }
     }
 
     @Override
     public EntidadeDominio update(int id, EntidadeDominio entidadeDominio) throws SQLException {
         var endereco = (Endereco) entidadeDominio;
-        String sql = "UPDATE enderecos SET end_cep = ?, end_tipo_residencia = ?, end_logradouro = ?, end_tipo_logradouro = ?, end_numero = ?, end_bairro = ?, end_cidade = ?, end_estado = ?, end_pais = ?, end_complemento = ?, end_favorito = ?, end_apelido_endereco = ?, end_cli_id = ?, end_cobranca = ? WHERE end_id = ?";
+        String sql = "UPDATE enderecos SET end_cep = ?, end_tipo_residencia = ?, end_logradouro = ?, end_tipo_logradouro = ?, end_numero = ?, end_bairro = ?, end_cidade = ?, end_estado = ?, end_pais = ?, end_complemento = ?, end_favorito = ?, end_apelido_endereco = ?, end_cli_id = ?, end_cobranca = ?, end_observacao = ? WHERE end_id = ?";
 
         try {
             var ps = conn.prepareStatement(sql);
             setDadosEndereco(endereco, ps);
-            ps.setInt(15, id);
+            ps.setInt(16, id);
             ps.executeUpdate();
             endereco.setId(id);
             return endereco;
         } catch (SQLException err) {
-            throw new SQLException("Erro ao atualizar endereço", err);
+            throw new SQLException(err);
         }
     }
 
@@ -154,6 +154,7 @@ public class EnderecoDAO implements IDAO {
         endereco.setFavorito(rs.getBoolean("end_favorito"));
         endereco.setApelidoEndereco(rs.getString("end_apelido_endereco"));
         endereco.setCobranca(rs.getBoolean("end_cobranca"));
+        endereco.setObservacao(rs.getString("end_observacao"));
         return endereco;
     }
 
@@ -172,5 +173,6 @@ public class EnderecoDAO implements IDAO {
         ps.setString(12, endereco.getApelidoEndereco());
         ps.setInt(13, endereco.getCliente().getId());
         ps.setBoolean(14, endereco.getCobranca());
+        ps.setString(15, endereco.getObservacao());
     }
 }

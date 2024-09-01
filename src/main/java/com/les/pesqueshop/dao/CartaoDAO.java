@@ -98,7 +98,7 @@ public class CartaoDAO implements IDAO {
             }
             return cartao;
         } catch (SQLException err) {
-            throw new SQLException("Erro ao salvar cartão", err);
+            throw new SQLException(err);
         }
     }
 
@@ -115,7 +115,7 @@ public class CartaoDAO implements IDAO {
             cartao.setId(id);
             return cartao;
         } catch (SQLException err) {
-            throw new SQLException("Erro ao atualizar cartão", err);
+            throw new SQLException(err);
         }
     }
 

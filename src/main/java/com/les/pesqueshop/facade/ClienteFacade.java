@@ -92,7 +92,7 @@ public class ClienteFacade implements IFacade {
         if (!existenciaResponse.equals("{}")) {
             Map<String, String> response = new com.fasterxml.jackson.databind.ObjectMapper().readValue(existenciaResponse, Map.class);
             if (!response.get("id").equals(String.valueOf(id))) {
-                throw new SQLException("Cliente já cadastrado");
+                throw new SQLException(String.valueOf(existenciaResponse));
             }
         }
 

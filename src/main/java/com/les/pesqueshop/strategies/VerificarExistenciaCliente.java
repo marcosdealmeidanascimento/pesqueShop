@@ -21,21 +21,41 @@ public class VerificarExistenciaCliente implements IStrategy {
     @Override
     public String processar(EntidadeDominio entidade) throws SQLException, JsonProcessingException {
         Cliente cliente = (Cliente) entidade;
-        List<EntidadeDominio> clientes = clienteDAO.filter(cliente, 1, 0);
+
+        Cliente clienteEmail = (Cliente) clienteDAO.getClienteByEmail(cliente);
+        Cliente clienteCpf = (Cliente) clienteDAO.getClienteByCpf(cliente);
+
+        int idClienteEmail = clienteEmail != null ? clienteEmail.getId() : 0;
+        int idClienteCpf = clienteCpf != null ? clienteCpf.getId() : 0;
 
         Map<String, String> response = new HashMap<>();
+        ObjectMapper objectMapper = new ObjectMapper();
 
-        if (clientes.size() > 0) {
-            response.put("id", String.valueOf(clientes.get(0).getId()));
-            response.put("nome", ((Cliente) clientes.get(0)).getNomeCompleto());
-            response.put("email", ((Cliente) clientes.get(0)).getEmail());
-            response.put("cpf", ((Cliente) clientes.get(0)).getCpf());
-            response.put("genero", ((Cliente) clientes.get(0)).getGenero());
-            response.put("dataNascimento", String.valueOf(((Cliente) clientes.get(0)).getDataNascimento()));
-            response.put("telefone", ((Cliente) clientes.get(0)).getTelefone());
+        if (clienteEmail == null && clienteCpf == null) {
+            return objectMapper.writeValueAsString(response);
         }
 
-        ObjectMapper objectMapper = new ObjectMapper();
+        if (clienteEmail != null && clienteEmail.getId() != cliente.getId()) {
+            response.put("email", "E-mail já cadastrado");
+        }
+
+        if (clienteCpf != null && clienteCpf.getId() != cliente.getId()) {
+            response.put("cpf", "CPF já cadastrado");
+        }
+
+        if (cliente.getId() != idClienteEmail && cliente.getId() != idClienteCpf) {
+            response.put("id", String.valueOf(idClienteEmail));
+        }
+
+        if (cliente.getId() == idClienteEmail && cliente.getId() != idClienteCpf) {
+            response.put("id", String.valueOf(idClienteCpf));
+        }
+
+        if (cliente.getId() != idClienteEmail && cliente.getId() == idClienteCpf) {
+            response.put("id", String.valueOf(idClienteEmail));
+        }
+
         return objectMapper.writeValueAsString(response);
+
     }
 }

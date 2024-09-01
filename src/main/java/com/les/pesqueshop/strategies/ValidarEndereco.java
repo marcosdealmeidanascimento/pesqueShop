@@ -58,12 +58,12 @@ public class ValidarEndereco implements IStrategy{
             errorMessages.put("tipoLogradouro", "Tipo de logradouro é obrigatório");
         }
 
-        if (endereco.getCliente() == null) {
-            errorMessages.put("cliente", "Cliente é obrigatório");
-        }
-
         if (endereco.getApelidoEndereco() == null || endereco.getApelidoEndereco().equals("")) {
             errorMessages.put("apelidoEndereco", "Apelido do endereço é obrigatório");
+        }
+
+        if (endereco.getCliente() == null) {
+            errorMessages.put("cliente", "Verificando dados do cliente");
         }
 
         ObjectMapper objectMapper = new ObjectMapper();

@@ -4,14 +4,14 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Endereco extends EntidadeDominio{
-    private String cep, tipoResidencia, logradouro, tipoLogradouro, numero, bairro, cidade, estado, pais, complemento, apelidoEndereco;
+    private String cep, tipoResidencia, logradouro, tipoLogradouro, numero, bairro, cidade, estado, pais, complemento, apelidoEndereco, observacao;
     private Cliente cliente;
     private boolean favorito, cobranca;
 
     public Endereco() {
     }
 
-    public Endereco(String cep, String tipoResidencia, String logradouro, String tipoLogradouro, String numero, String bairro, String cidade, String estado, String pais, String complemento, Cliente cliente, boolean favorito, String apelidoEndereco, boolean cobranca) {
+    public Endereco(String cep, String tipoResidencia, String logradouro, String tipoLogradouro, String numero, String bairro, String cidade, String estado, String pais, String complemento, Cliente cliente, boolean favorito, String apelidoEndereco, boolean cobranca, String observacao) {
         setCep(cep);
         setTipoResidencia(tipoResidencia);
         setLogradouro(logradouro);
@@ -26,6 +26,15 @@ public class Endereco extends EntidadeDominio{
         setCliente(cliente);
         setApelidoEndereco(apelidoEndereco);
         setCobranca(cobranca);
+        setObservacao(observacao);
+    }
+
+    public String getObservacao() {
+        return observacao;
+    }
+
+    public void setObservacao(String observacao) {
+        this.observacao = observacao;
     }
 
     public String getCep() {
