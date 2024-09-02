@@ -71,45 +71,48 @@ public class ClienteDAO implements IDAO {
             limit = 10;
         }
 
-        if (cliente.getCpf() != null) {
+        if (cliente.getCpf() != null && cliente.getCpf() != "") {
             sql.append(" AND cli_cpf = ?");
             params.add(cliente.getCpf());
         }
 
-        if (cliente.getNomeCompleto() != null) {
+        if (cliente.getNomeCompleto() != null && cliente.getNomeCompleto() != "") {
             sql.append(" AND cli_nome_completo LIKE ?");
             params.add("%" + cliente.getNomeCompleto() + "%");
         }
 
-        if (cliente.getGenero() != null) {
+        if (cliente.getGenero() != null && cliente.getGenero() != "") {
             sql.append(" AND cli_genero = ?");
             params.add(cliente.getGenero());
         }
 
-        if (cliente.getEmail() != null) {
+        if (cliente.getEmail() != null && cliente.getEmail() != "") {
             sql.append(" AND cli_email = ?");
             params.add(cliente.getEmail());
         }
 
-        if (cliente.getTelefoneDDD() != null) {
+        if (cliente.getTelefoneDDD() != null && cliente.getTelefoneDDD() != "") {
             sql.append(" AND cli_telefone_ddd = ?");
             params.add(cliente.getTelefoneDDD());
         }
 
-        if (cliente.getTelefone() != null) {
+        if (cliente.getTelefone() != null && cliente.getTelefone() != "") {
             sql.append(" AND cli_telefone LIKE ?");
             params.add("%" + cliente.getTelefone() + "%");
         }
 
-        if (cliente.getTipoTelefone() != null) {
+        if (cliente.getTipoTelefone() != null && cliente.getTipoTelefone() != "") {
             sql.append(" AND cli_tipo_telefone = ?");
             params.add(cliente.getTipoTelefone());
         }
 
-        if (cliente.getDataNascimento() != null) {
+        if (cliente.getDataNascimento() != null && cliente.getDataNascimento() != LocalDate.MIN) {
             sql.append(" AND cli_data_nascimento = ?");
             params.add(Date.valueOf(cliente.getDataNascimento()));
         }
+
+        sql.append(" AND cli_status = ?");
+        params.add(cliente.getStatus());
 
         sql.append(" LIMIT ? OFFSET ?");
 
