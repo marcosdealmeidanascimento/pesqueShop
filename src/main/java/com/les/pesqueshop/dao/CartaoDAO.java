@@ -66,7 +66,7 @@ public class CartaoDAO implements IDAO {
     }
 
     public List<EntidadeDominio> getCartoesCliente (int id) throws SQLException {
-        String sql = "SELECT * FROM cartoes WHERE car_cli_id = ?";
+        String sql = "SELECT * FROM cartoes WHERE car_cli_id = ? ORDER BY car_favorito DESC";
         List<EntidadeDominio> cartoes = new ArrayList<>();
 
         try {

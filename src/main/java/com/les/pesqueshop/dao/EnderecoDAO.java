@@ -66,7 +66,7 @@ public class EnderecoDAO implements IDAO {
     }
 
     public List<EntidadeDominio> getEnderecosCliente(int id) throws SQLException {
-        String sql = "SELECT * FROM enderecos WHERE end_cli_id = ?";
+        String sql = "SELECT * FROM enderecos WHERE end_cli_id = ? ORDER BY end_favorito DESC";
         List<EntidadeDominio> enderecos = new ArrayList<>();
 
         try {
