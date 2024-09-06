@@ -47,11 +47,11 @@ public class VerificarExistenciaCliente implements IStrategy {
             response.put("id", String.valueOf(idClienteEmail));
         }
 
-        if (cliente.getId() == idClienteEmail && cliente.getId() != idClienteCpf) {
+        if (cliente.getId() == idClienteEmail && cliente.getId() != idClienteCpf && idClienteCpf != 0) {
             response.put("id", String.valueOf(idClienteCpf));
         }
 
-        if (cliente.getId() != idClienteEmail && cliente.getId() == idClienteCpf) {
+        if (cliente.getId() != idClienteEmail && cliente.getId() == idClienteCpf && idClienteEmail != 0) {
             response.put("id", String.valueOf(idClienteEmail));
         }
 
